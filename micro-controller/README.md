@@ -15,15 +15,16 @@ This project is licensed under the MIT License. Please see the file LICENSE in t
 Need the following:
 * **Arduino IDE** (1.0.x or greater)
 	* https://www.arduino.cc/en/Main/Software
-
-Setting up the IDE
-1.) Under tools tab, make sure the board is "Arduino/Genuino Uno".
-
-2.) Install Radiohead library by downloading ZIP file from:
+* **Radiohead Library**
 	* http://lowpowerlab.com/RadioHead_LowPowerLab.zip
 
-Then in IDE Sketch > Include Library > Add .ZIP Library
+Setting up the IDE
 
--rf95_node folder contains the arduino file code for a node.
+1.) Under tools tab, make sure the board is "Arduino/Genuino Uno".
 
--test folder is to test the connection of LoRa Transceivers between mircocontrollers. Use rf95_node(as node) and rf95_server(as hub) to test LoRa connection at 915mhz.
+2.) Install Radiohead library by downloading the ZIP file and in IDE Sketch > Include Library > Add .ZIP Library
+
+## Note:
+* rf95_node folder contains the arduino file code for a node.
+
+* test folder is to test the connection of LoRa Transceivers between mircocontrollers. Use rf95_node(as node) and rf95_server(as hub) to test LoRa connection at 915mhz.
