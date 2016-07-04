@@ -1,6 +1,8 @@
 # plantalytics-hardware
 
-All the Hardware Code
+The Plantalytics network relies on a series of nodes (Motenino USB RFm95 with LoRa 915mhz Transceiver) and hubs (Multitech Conduit mLinux Model).
+
+The firmware for the nodes is written in C++ and can be found in the `micro-controller` subdirectory. The firmware for the hub is written in Python, and can be found in the `conduit` subdirectory.
 
 ------------------------------------------------------------------------------------------------
 ## License
