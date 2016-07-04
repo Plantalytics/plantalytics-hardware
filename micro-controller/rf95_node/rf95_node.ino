@@ -13,12 +13,13 @@
 #include <RH_RF95.h>
 #include <stdlib.h>
 
-
 #define FREQUENCY  915
 
 #define LED           9 // Moteinos have LEDs on D9
 #define FLASH_SS      8 // and FLASH SS on D8
 
+#define NODEID        1    //unique for each node on same network
+#define NETWORKID     100  //the same on all nodes that talk to each other
 
 // Singleton instance of the radio driver
 RH_RF95 rf95;             
@@ -43,13 +44,16 @@ void loop()
 
   //variables used in formatting:
   byte sendLen;
-  char buffer[50]; //final byte array that gets passed to radio.send
+  char buffer[RH_RF95_MAX_MESSAGE_LEN]; //final byte array that gets passed to radio.send
+  memset(buffer, '\0', sizeof(buffer));
   //Randomly generate data for MVP
   int temp = random(50,100); //range of 50 to 100
   int humi = random(100);    //max of 100
   int wet = random(20);      //max of 20
 
-  sprintf(buffer, "L:%d F:%d H:%d",
+  sprintf(buffer,  "NETWORKID:%d NODEID:%d L:%d F:%d H:%d",
+          NETWORKID,
+          NODEID,
           wet, //getLeafWetness()
           temp,//getFahrenheitHundredths() 
           humi//getHumidityPercent()
