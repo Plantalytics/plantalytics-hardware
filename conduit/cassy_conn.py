@@ -10,15 +10,25 @@ import sys
 import time
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
+import ConfigParser
 
-# Define global string variables
-USERNAME = ***
-PASSWORD = ***
-IP_ADDRESS = ***
-KEYSPACE = ***
-
-# Define timeout interval (Keep in mind that the Conduit is pretty slow!)
-CONN_TIMEOUT = 30
+def load_config():
+    config = ConfigParser.RawConfigParser()
+    config.read('hub.cfg')
+    # Load connection values
+    global USERNAME
+    USERNAME = config.get('Connection Values', 'username')
+    global PASSWORD
+    PASSWORD = config.get('Connection Values', 'password')
+    global IP_ADDRESS
+    IP_ADDRESS = config.get('Connection Values', 'ip_address')
+    global KEYSPACE
+    KEYSPACE = config.get('Connection Values', 'keyspace')
+    #Load settings
+    global INTERVAL
+    INTERVAL = config.getint('Settings', 'interval')
+    global CONN_TIMEOUT
+    CONN_TIMEOUT = config.getint('Settings', 'connection_timeout')
 
 def get_conditions(vineId, hubId, nodeId):
     # Temp range: 15-85 degrees F
@@ -78,8 +88,9 @@ def push_batch(batch):
 
 def bedtime():
     increment = 15
-    # Sleep for 5 minutes in 15 second increments
-    for t in range(0, 20):
+    total = INTERVAL/increment
+    # Sleep for interval in 15 second increments
+    for t in range(0, total):
         time.sleep(increment)
     
 def main():    
@@ -92,6 +103,8 @@ def main():
     # Otherwise, run with a 9 node sample
     except:
         nodes = 9    
+    # Load .cfg
+    load_config()
     # Loop until user interrupt
     i = 1
     while 1:
