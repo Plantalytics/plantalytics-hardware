@@ -1,6 +1,6 @@
 # plantalytics-hardware
 
-All the Hardware Code
+The Plantalytics network relies on a series of nodes (Motenino USB RFm95 with LoRa 915mhz Transceiver).
 
 ------------------------------------------------------------------------------------------------
 ## License
