@@ -1,22 +1,24 @@
 # Plantalytics Microcontrollers
 
-Microcontroller: Motenino USB RFm95 with LoRa 915mhz Transceiver
-
-Using Arduino 1.6.9 IDE in C++
-
 ## License
 
 Copyright (c) 2016 Sapphire Becker, Katy Brimm, Scott Ewing, Matt Fraser, Kelly Ledford, Michael Limb, Steven Ngo, Eric Turley.
 
 This project is licensed under the MIT License. Please see the file LICENSE in this distribution for license terms.
 
+## How to Run
 
-## Set-up
-Need the following:
-* **Arduino IDE** (1.0.x or greater)
-	* https://www.arduino.cc/en/Main/Software
-* **Radiohead Library**
-	* http://lowpowerlab.com/RadioHead_LowPowerLab.zip
+* **Arduino IDE** (version 1.6.9 or greater)
+  * https://www.arduino.cc/en/Main/Software
+* **IMIC Master Library** 
+  * https://github.com/matthijskooijman/arduino-lmic
+* **Radiohead Library** 
+  * http://lowpowerlab.com/RadioHead_LowPowerLab.zip
+* **Micro controller** (Motenino USB RFM95 with LORA 915mhz Trasnsceiver)
+
+Install the libraries in Arduino IDE using provided files or using provided links for more up to date libraries(recommanded). 
+
+Plug the micro controller into the computer, code should compile and transfer into the micro controller.
 
 Setting up the IDE
 
