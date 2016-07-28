@@ -27,6 +27,6 @@ Setting up the IDE
 2.) Install Radiohead library by downloading the ZIP file and in IDE Sketch > Include Library > Add .ZIP Library
 
 ## Note:
-* rf95_node folder contains the arduino file code for a node.
 
+* rf95_node folder contains the arduino file code for a node.
 * test folder is to test the connection of LoRa Transceivers between mircocontrollers. Use rf95_node(as node) and rf95_server(as hub) to test LoRa connection at 915mhz.
