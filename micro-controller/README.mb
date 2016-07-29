@@ -1,6 +1,0 @@
-Mirco controller: Motenino USB RFm95 with LoRa 915mhz Transceiver
-
-Using Arduino 1.6.9 IDE in C++
-
-rf95_node folder contains the arduino file code for a node.
-test folder is to test the connection of LoRa Transceivers between mirco controllers.

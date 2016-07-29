@@ -1,8 +1,7 @@
-# plantalytics-hardware
+# Node Microcontroller
 
-The Plantalytics network relies on a series of nodes (Motenino USB RFm95 with LoRa 915mhz Transceiver).
+Each node in MVP will be using this code.
 
-------------------------------------------------------------------------------------------------
 ## License
 
 Copyright (c) 2016 Sapphire Becker, Katy Brimm, Scott Ewing, Matt Fraser, Kelly Ledford, Michael Limb, Steven Ngo, Eric Turley.

@@ -1,8 +1,7 @@
-# plantalytics-hardware
+# Microcontroller Connections
 
-The Plantalytics network relies on a series of nodes (Motenino USB RFm95 with LoRa 915mhz Transceiver).
+Contains test for connection of mircocontrollers(moteino RFM95 LoRa 915mhz).
 
-------------------------------------------------------------------------------------------------
 ## License
 
 Copyright (c) 2016 Sapphire Becker, Katy Brimm, Scott Ewing, Matt Fraser, Kelly Ledford, Michael Limb, Steven Ngo, Eric Turley.
