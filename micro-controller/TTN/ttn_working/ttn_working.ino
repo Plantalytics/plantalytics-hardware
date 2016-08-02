@@ -46,7 +46,6 @@ void os_getArtEui (u1_t* buf) { }
 void os_getDevEui (u1_t* buf) { }
 void os_getDevKey (u1_t* buf) { }
 
-//static uint8_t mydata[] = "Hello, world!";
 static osjob_t sendjob;
 
 // Schedule TX every this many seconds (might become longer due to duty
@@ -137,7 +136,8 @@ void do_send(osjob_t* j) {
   char buffer[255]; //final byte array that gets passed to radio.send
   sendLen = strlen(buffer);  //get the length of buffer
   //static uint8_t mydata[] = "HELLO WORLD";
-  sprintf(buffer, "NODEID:03FFEBB2 L:%d F:%d H:%d",
+  //"{\"NODEID\":\"03FFEBB2\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}"
+  sprintf(buffer, "{\"NODEID\":\"03FFEBB2\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}",
          // NODEID,
           wet, //getLeafWetness()
           temp,//getFahrenheitHundredths() 
