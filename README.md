@@ -19,14 +19,17 @@ Install the Arduino IDE:
 Install the following in your Arduino/libraries directory:
 * **IMIC Master Library** 
   * https://github.com/matthijskooijman/arduino-lmic
-* **Radiohead Library** 
-  * http://lowpowerlab.com/RadioHead_LowPowerLab.zip
+  * Drives communications to the hub.
 * **DHT Sensor Library**
   * https://github.com/adafruit/DHT-sensor-library
+  * Enables communication with the temperature and humidity sensor.
+  
+To run communication tests,  you will also need one additional library:
+* **Radiohead Library** (for data send/receive tests)
+  * http://lowpowerlab.com/RadioHead_LowPowerLab.zip
 
 Plug the micro controller into the computer, and set the device address at line 48. When compiled, the program will be pushed to the micro-controller and execute immediately!
 
 ## Note:
 
-* rf95_node folder contains the arduino file code for a node.
-* test folder is to test the connection of LoRa Transceivers between mircocontrollers. Use rf95_node(as node) and rf95_server(as hub) to test LoRa connection at 915mhz.
+* Test folder is to test the connection of LoRa Transceivers between mircocontrollers. Use rf95_node(as node) and rf95_server(as hub) to test LoRa connection at 915mhz.
