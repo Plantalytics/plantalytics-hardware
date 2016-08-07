@@ -20,10 +20,19 @@
    Do not forget to define the radio type correctly in config.h.
 
  *******************************************************************************/
+ 
+/*******************************************************************************
+ * Updates to code made Aug. 2016 for Plantalytics
+ *     Copyright (c) 2016 Sapphire Becker, Katy Brimm, Scott Ewing, 
+ *       Matt Fraser, Kelly Ledford, Michael Limb, Steven Ngo, Eric Turley.
+ *     This project is licensed under the MIT License.
+ *     Please see the file LICENSE in this distribution for license terms.
+ * Contact: plantalytics.capstone@gmail.com
+
+ *******************************************************************************/
 
 #include <lmic.h>
 #include <hal/hal.h>
-#include <SPI.h>
 
 // LoRaWAN NwkSKey, network session key
 // This is the default Semtech key, which is used by the prototype TTN
@@ -130,19 +139,19 @@ void onEvent (ev_t ev) {
 
 void do_send(osjob_t* j) {
   byte sendLen;
+  // Currently implements random numbers for values.
   int temp = random(50,100); //range of 50 to 100
   int humi = random(100);    //max of 100
   int wet = random(20);      //max of 20
   char buffer[255]; //final byte array that gets passed to radio.send
   sendLen = strlen(buffer);  //get the length of buffer
-  //static uint8_t mydata[] = "HELLO WORLD";
   //"{\"NODEID\":\"03FFEBB2\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}"
   sprintf(buffer, "{\"NODEID\":\"03FFEBB2\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}",
-         // NODEID,
-          wet, //getLeafWetness()
-          temp,//getFahrenheitHundredths() 
-          humi//getHumidityPercent()
-          //Will later implement functions to get data from sensors
+          // NODEID,
+          wet,     //getLeafWetness()
+          temp,    //getFahrenheitHundredths() 
+          humi     //getHumidityPercent()
+          // ToDo: Get data from sensors
           );
   
   // Check if there is not a current TX/RX job running
@@ -214,3 +223,4 @@ void setup() {
 void loop() {
   os_runloop_once();
 }
+
