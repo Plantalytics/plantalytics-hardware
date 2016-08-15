@@ -29,7 +29,6 @@
 
  *******************************************************************************/
 
-<<<<<<< HEAD:micro-controller/TTN/ttn_working/ttn_working.ino
 #include <lmic.h>     //For TTN(thethingsnetwork) setup
 #include <hal/hal.h>  //For TTN
 #include <SPI.h>
@@ -145,14 +144,12 @@ void onEvent (ev_t ev) {
 
 void do_send(osjob_t* j) {
   byte sendLen;
-<<<<<<< HEAD:micro-controller/TTN/ttn_working/ttn_working.ino
   int temp = dht.readTemperature(true);
   int humi = dht.readHumidity();
   int wet = analogRead(A0);
   char buffer[255]; //final byte array that gets passed to radio.send
   sendLen = strlen(buffer);  //get the length of buffer
   //"{\"NODEID\":\"03FFEBB2\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}"
-<<<<<<< HEAD:micro-controller/TTN/ttn_working/ttn_working.ino
   sprintf(buffer, "{\"NODEID\":\"00000001\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}",
           //DEVADDR,
           wet, //getLeafWetness()
