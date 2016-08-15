@@ -7,10 +7,8 @@
    including, but not limited to, copying, modification and redistribution.
    NO WARRANTY OF ANY KIND IS PROVIDED.
 
-   This example sends a valid LoRaWAN packet with payload "Hello,
-   world!", using frequency and encryption settings matching those of
-   the (early prototype version of) The Things Network.
-
+   LoRaWAN packet
+   
    Note: LoRaWAN per sub-band duty-cycle limitation is enforced (1% in g1,
     0.1% in g2).
 
@@ -21,9 +19,15 @@
 
  *******************************************************************************/
 
-#include <lmic.h>
-#include <hal/hal.h>
+#include <lmic.h>     //For TTN(thethingsnetwork) setup
+#include <hal/hal.h>  //For TTN
 #include <SPI.h>
+#include <DHT.h>      //For temperature and humidity sensor
+
+#define DHTPIN 5      //Sensor is at pin 5
+#define DHTTYPE DHT22 //Type of DHT sensor used
+
+DHT dht(DHTPIN, DHTTYPE);
 
 // LoRaWAN NwkSKey, network session key
 // This is the default Semtech key, which is used by the prototype TTN
@@ -37,7 +41,7 @@ static const u1_t PROGMEM APPSKEY[16] = { 0x2B, 0x7E, 0x15, 0x16, 0x28, 0xAE, 0x
 
 // LoRaWAN end-device address (DevAddr)
 // See http://thethingsnetwork.org/wiki/AddressSpace
-static const u4_t DEVADDR = 0x03FFEBB2 ; // <-- Change this address for every node!
+static const u4_t DEVADDR = 0x00000001 ; // <-- Change this address for every node!
 
 // These callbacks are only used in over-the-air activation, so they are
 // left empty here (we cannot leave them out completely unless
@@ -130,21 +134,22 @@ void onEvent (ev_t ev) {
 
 void do_send(osjob_t* j) {
   byte sendLen;
-  int temp = random(50,100); //range of 50 to 100
-  int humi = random(100);    //max of 100
-  int wet = random(20);      //max of 20
+  int temp = dht.readTemperature(true);
+  int humi = dht.readHumidity();
+  int wet = analogRead(A0);
   char buffer[255]; //final byte array that gets passed to radio.send
   sendLen = strlen(buffer);  //get the length of buffer
   //static uint8_t mydata[] = "HELLO WORLD";
   //"{\"NODEID\":\"03FFEBB2\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}"
-  sprintf(buffer, "{\"NODEID\":\"03FFEBB2\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}",
-         // NODEID,
+  sprintf(buffer, "{\"NODEID\":\"00000001\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}",
+          //DEVADDR,
           wet, //getLeafWetness()
           temp,//getFahrenheitHundredths() 
           humi//getHumidityPercent()
           //Will later implement functions to get data from sensors
           );
-  
+  Serial.println(temp);
+  Serial.println(humi);
   // Check if there is not a current TX/RX job running
   if (LMIC.opmode & OP_TXRXPEND) {
     Serial.println(F("OP_TXRXPEND, not sending"));
@@ -159,14 +164,9 @@ void do_send(osjob_t* j) {
 
 void setup() {
   Serial.begin(115200);
+  dht.begin();
   Serial.println(F("Starting"));
-
-#ifdef VCC_ENABLE
-  // For Pinoccio Scout boards
-  pinMode(VCC_ENABLE, OUTPUT);
-  digitalWrite(VCC_ENABLE, HIGH);
-  delay(1000);
-#endif
+  
 
   // LMIC init
   os_init();
@@ -205,8 +205,6 @@ void setup() {
   //LMIC_setDrTxpow(DR_SF7,14);
   LMIC_setDrTxpow(DR_SF9, 14);
   
-  randomSeed(analogRead(0)); //Generate seed based off of analog 0
-  Serial.print("starting");
   // Start job
   do_send(&sendjob);
 }
