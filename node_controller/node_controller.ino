@@ -149,11 +149,11 @@ void do_send(osjob_t* j) {
   char buffer[255];          //final byte array that gets passed to radio.send
   sendLen = strlen(buffer);  //get the length of buffer
   // Compose buffer: { "NODEID":"val", "L":"val", "T":"val", "H":"val" }
-  sprintf(buffer, "{\"NODEID\":\"%d\",\"L\":\"%d.%d\",\"T\":\"%d.%d\",\"H\":\"%d\"}",
+  sprintf(buffer, "{\"NODEID\":\"%d\",\"L\":\"%d\",\"T\":\"%d.%d\",\"H\":\"%d.%d\"}",
           NODE_ID,
-          wet,                   //getLeafWetness()
-          temp, (wet*1000)%1000, //getFahrenheitHundredths() 
-          humi, (humi*1000)%1000 //getHumidityPercent()
+          wet,                       //getLeafWetness()
+          (int)temp, (int)(temp*100)%100, //getFahrenheitHundredths() 
+          (int)humi, (int)(humi*100)%100  //getHumidityPercent()
           );
   Serial.print("Buffer: ");
   Serial.println(buffer);
@@ -171,7 +171,7 @@ void do_send(osjob_t* j) {
 void setup() {
   Serial.begin(115200);
   dht.begin();
-  Serial.println(F("Starting node."));
+  Serial.println(F("Starting..."));
   
 
   // LMIC init
