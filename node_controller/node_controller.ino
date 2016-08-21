@@ -52,6 +52,7 @@ static const u1_t PROGMEM APPSKEY[16] = { 0x2B, 0x7E, 0x15, 0x16, 0x28, 0xAE, 0x
 // LoRaWAN end-device address (DevAddr)
 // See http://thethingsnetwork.org/wiki/AddressSpace
 static const u4_t DEVADDR = 0x00000001 ; // <-- Change this address for every node!
+static const int NODE_ID = 1;            // <-- Unique for every node!
 
 // These callbacks are only used in over-the-air activation, so they are
 // left empty here (we cannot leave them out completely unless
@@ -70,9 +71,7 @@ const unsigned TX_INTERVAL = 1; //was 60
 const lmic_pinmap lmic_pins = {
   .nss = 10,
   .rxtx = LMIC_UNUSED_PIN, // Not connected on RFM92/RFM95
-  //.rst = 5, // Needed on RFM92/RFM95 (author)-> doesn't seem necessary, disconnect makes no difference (troy)
   .rst = LMIC_UNUSED_PIN,
-  //.dio = {2, 3, 4},
   .dio = {2, 3, LMIC_UNUSED_PIN},
 };
 
@@ -144,28 +143,26 @@ void onEvent (ev_t ev) {
 
 void do_send(osjob_t* j) {
   byte sendLen;
-  int temp = dht.readTemperature(true);
-  int humi = dht.readHumidity();
   int wet = analogRead(A0);
-  char buffer[255]; //final byte array that gets passed to radio.send
+  float temp = dht.readTemperature(true);
+  float humi = dht.readHumidity();
+  char buffer[255];          //final byte array that gets passed to radio.send
   sendLen = strlen(buffer);  //get the length of buffer
-  //"{\"NODEID\":\"03FFEBB2\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}"
-  sprintf(buffer, "{\"NODEID\":\"00000001\",\"L\":\"%d\",\"T\":\"%d\",\"H\":\"%d\"}",
-          //DEVADDR,
-          wet, //getLeafWetness()
-          temp,//getFahrenheitHundredths() 
-          humi//getHumidityPercent()
-          //Will later implement functions to get data from sensors
+  // Compose buffer: { "NODEID":"val", "L":"val", "T":"val", "H":"val" }
+  sprintf(buffer, "{\"NODEID\":\"%d\",\"L\":\"%d\",\"T\":\"%d.%d\",\"H\":\"%d.%d\"}",
+          NODE_ID,
+          wet,                       //getLeafWetness()
+          (int)temp, (int)(temp*100)%100, //getFahrenheitHundredths() 
+          (int)humi, (int)(humi*100)%100  //getHumidityPercent()
           );
-  Serial.println(temp);
-  Serial.println(humi);
+  Serial.print("Buffer: ");
+  Serial.println(buffer);
   // Check if there is not a current TX/RX job running
   if (LMIC.opmode & OP_TXRXPEND) {
     Serial.println(F("OP_TXRXPEND, not sending"));
   } else {
     // Prepare upstream data transmission at the next possible time.
     LMIC_setTxData2(1, (uint8_t *)buffer, sendLen, 0);
-    //LMIC_setTxData2(1, mydata, sizeof(mydata) - 1, 0);
     Serial.println(F("Packet queued"));
   }
   // Next TX is scheduled after TX_COMPLETE event.
@@ -174,7 +171,7 @@ void do_send(osjob_t* j) {
 void setup() {
   Serial.begin(115200);
   dht.begin();
-  Serial.println(F("Starting"));
+  Serial.println(F("Starting..."));
   
 
   // LMIC init
@@ -211,7 +208,6 @@ void setup() {
   LMIC_setLinkCheckMode(0);
 
   // Set data rate and transmit power (note: txpow seems to be ignored by the library)
-  //LMIC_setDrTxpow(DR_SF7,14);
   LMIC_setDrTxpow(DR_SF9, 14);
   
   // Start job
